@@ -16,6 +16,7 @@ test_list = [
     "test.module.BufferModule.BufVmallocModule",
     "test.module.TriggerModule.TrigTimerModule",
     "test.module.TriggerModule.TrigHrtModule",
+    "test.sysfs.Enable",
              ]
 
 def zio_test_help():
