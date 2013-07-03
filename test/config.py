@@ -4,11 +4,17 @@
 @license: GPLv2
 """
 
+# # # # # # SYSFS configuration # # # # # # # #
+
+# The trigger associated to the post-sample test
+pre_post_sample_trigger = "timer"
+
 # Number of repetitions of a test on stress test
 stress_repetitions = 100
 
 # ms-period of trigger timer when used
 timer_ms_period = 100
+timer_ms_period_fast = 50
 
 # Time to wait (seconds) before reading the acquisition. Usually used with
 # trigger timer to allow the trigger to fill the buffer

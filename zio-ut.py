@@ -21,6 +21,7 @@ test_list = [
     "test.trigger.timer.TimerPeriod",
     "test.buffer.CurrentBuffer",
     "test.buffer.Flush",
+    "test.trigger.PrePostSample",
              ]
 
 def zio_test_help():
