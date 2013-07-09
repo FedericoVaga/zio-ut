@@ -12,6 +12,10 @@ from PyZio import ZioUtil
 
 # List of all tests
 test_list = [
+    "test.module.CoreModule.ZioModule",
+    "test.module.BufferModule.BufVmallocModule",
+    "test.module.TriggerModule.TrigTimerModule",
+    "test.module.TriggerModule.TrigHrtModule",
              ]
 
 def zio_test_help():
