@@ -22,6 +22,7 @@ test_list = [
     "test.buffer.CurrentBuffer",
     "test.buffer.Flush",
     "test.trigger.PrePostSample",
+    "test.sysfs.CurrentControl",
              ]
 
 def zio_test_help():
