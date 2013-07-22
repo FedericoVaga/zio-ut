@@ -23,6 +23,7 @@ test_list = [
     "test.buffer.Flush",
     "test.trigger.PrePostSample",
     "test.sysfs.CurrentControl",
+    "test.buffer.Size",
              ]
 
 def zio_test_help():

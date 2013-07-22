@@ -9,6 +9,20 @@
 # The trigger associated to the post-sample test
 pre_post_sample_trigger = "timer"
 
+# The buffer associated to the buffer len size tests
+test_size_buffer = "kmalloc"
+
+# The buffer maximum lenght
+buffer_max_len = 16
+
+# The buffer maximum kb lenght
+buffer_max_kb = 128
+
+# Number of block add over the buffer limit
+n_block_overflow = 100
+
+kb_overflow = 128
+
 # Number of repetitions of a test on stress test
 stress_repetitions = 100
 
