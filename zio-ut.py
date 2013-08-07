@@ -18,6 +18,7 @@ test_list = [
     "test.module.TriggerModule.TrigHrtModule",
     "test.sysfs.Enable",
     "test.trigger.CurrentTrigger",
+    "test.trigger.timer.TimerPeriod",
              ]
 
 def zio_test_help():
