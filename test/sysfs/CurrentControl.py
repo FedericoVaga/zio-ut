@@ -6,7 +6,7 @@
 
 from PyZio.ZioConfig import devices_path, triggers
 from PyZio.ZioDev import ZioDev
-from test import utils
+from test import utils, config
 import unittest
 import os
 
@@ -26,35 +26,31 @@ class CurrentControl(unittest.TestCase):
         if self.device == None:
             self.skipTest("Missing device, cannot run tests")
 
+        # Set channel set and channel to use
         self.cset = self.device.cset[0]  # Use cset input8
-        self.cset.set_current_trigger("hrt")  # Set trigger 'hrt'
-        self.trigger = self.cset.trigger
-        self.chan = self.cset.chan[0]  # Use channel 0
+        self.chan = self.cset.chan[0]
         self.interface = self.chan.interface
 
-        self.trigger.disable()
-        self.interface.open_ctrl_data(os.O_RDONLY)  # Open control cdev
+        # Set and configure 'hrt' trigger
+        self.cset.set_current_trigger("hrt")
+        self.trigger = self.cset.trigger
+        self.trigger.attribute["slack-ns"].set_value(config.hrt_slack_nsec);
 
         # Empty buffer
         self.chan.buffer.flush()
+
+        # Open control char device
+        self.interface.open_ctrl_data(os.O_RDONLY)
+
+        self.trigger.enable()
+
 
     def tearDown(self):
         self.interface.close_ctrl_data()  # Close control cdev
         self.trigger.disable()
 
 
-    def test_cmp_cdev_current_control_(self):
-        """
-        It performs the 'test_cmp_cdev_current_control' test with a set of a
-        random number of blocks within the buffer.
-        """
-
-        for n_block in range(2, 10):
-            print("    test with " + str(n_block) + " blocks in the buffer")
-            self.test_cmp_cdev_current_control(n_block)
-
-
-    def test_cmp_cdev_current_control(self, n_block = 1):
+    def test_cmp_cdev_current_control(self):
         """
         It fills the buffer with a given number of blocks. Then, it disable the
         trigger and it reads all blocks from the buffer. Only the last block
@@ -62,17 +58,21 @@ class CurrentControl(unittest.TestCase):
         channel
         """
 
-        # Fill buffer
-        utils.trigger_hrt_fill_buffer(self.trigger, n_block, True)
+        ctrl_prev = None
 
         # Read control one by one
-        for i in range(n_block):
+        for i in range(config.n_block_load):
+            utils.trigger_hrt_fill_buffer(self.trigger, 1)
+
+            ready = self.interface.is_device_ready(config.select_wait)
+            self.assertTrue(ready, "Trigger {0} does not fire, or black was lost".format(i))
+
             ctrl_cdev = self.interface.read_ctrl()
             ctrl_curr = self.chan.get_current_ctrl()
 
-            if i < n_block - 1:
-                self.assertFalse(ctrl_cdev == ctrl_curr,
-                        "Except the last control (block), they cannot be equal to the current-control")
-            else:
-                self.assertTrue(ctrl_cdev == ctrl_curr,
-                        "Last control (block) must be equal to current-control")
+            self.assertNotEqual(ctrl_prev, ctrl_curr,
+                    "Previous control (block) cannot be equal to the current-control")
+            self.assertEqual(ctrl_cdev, ctrl_curr,
+                    "Last control (block) must be equal to current-control")
+
+            ctrl_prev = ctrl_cdev
