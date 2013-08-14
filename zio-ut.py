@@ -24,6 +24,7 @@ test_list = [
     "test.trigger.PrePostSample",
     "test.sysfs.CurrentControl",
     "test.buffer.Size",
+    "test.trigger.hrt.FireScalar",
              ]
 
 def zio_test_help():
