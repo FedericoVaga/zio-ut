@@ -31,6 +31,7 @@ timer_ms_period = 100
 timer_ms_period_fast = 50
 
 # time tollerance (nsec)
+hrt_slack_nsec = 10000000
 time_tollerance_nsec = 20000000
 time_tollerance_msec = time_tollerance_nsec / 1000000
 

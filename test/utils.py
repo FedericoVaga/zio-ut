@@ -60,12 +60,12 @@ def convert_ns_to_ZioTimeStamp(nsec):
     nsec_decimal = nsec - sec * 1000000000
     return ZioTimeStamp(sec, nsec_decimal, 0)
 
-def calculate_test_time_timers(timer_list):
+def calculate_test_time_timers(timer_list, extra_time = 0.0):
     """
     It calculate the total time to fire the list of timers. There is two
     """
     # Calculate test time
-    test_time = 0.0
+    test_time = extra_time
     for timer in timer_list:
         test_time += convert_ZioTimeStamp_to_s(timer)
 

@@ -27,6 +27,7 @@ test_list = [
     "test.buffer.Overflow",
     "test.trigger.hrt.FireScalar",
     "test.trigger.hrt.FireSecond",
+    "test.trigger.hrt.PeriodAndSlack",
              ]
 
 def zio_test_help():
