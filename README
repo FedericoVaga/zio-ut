@@ -1,3 +1,26 @@
 This ZIO unittest is made with Python Unittest. It performs tests on buffer,
 triggers and devices. This unittest depends on PyZio library that you can find
 on GitHub (https://github.com/FedericoVaga/PyZio).
+
+RULES:
+1.0 Test specific feature.
+    Do not waste time with paranoic tests, or re-testing the same stuff in
+    different tests. Trust the other tests, they will fail on error. So,
+    concentrate only to the feature object of test.
+    
+1.1 Create a class for each kind of test.
+    Class should contain few tests about a specific feature
+
+2.0 Keep It Simple Stupid, KISS.
+    Use very simple algorithm to create your tests. This should reduce the
+    number of errors that you will do. We do not want bug in the test suite,
+    if possibile :)
+
+2.1 Avoid big function.
+    Big function are not simple, split them into smaller function that perform
+    simple task.
+
+3.0 Style Rules
+3.1 Describe the feature to test under the class declaration
+3.2 Describe the specific test purpose under the function declaration.
+3.3 Leave two blank lines between two functions
