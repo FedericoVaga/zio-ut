@@ -28,6 +28,7 @@ test_list = [
     "test.trigger.hrt.FireScalar",
     "test.trigger.hrt.FireSecond",
     "test.trigger.hrt.PeriodAndSlack",
+    "test.interface.ReadPolicy",
              ]
 
 def zio_test_help():

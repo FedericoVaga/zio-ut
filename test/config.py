@@ -6,6 +6,9 @@
 
 # # # # # # SYSFS configuration # # # # # # # #
 
+# Test buffer
+default_buffer = "kmalloc"
+
 # The trigger associated to the post-sample test
 pre_post_sample_trigger = "timer"
 
