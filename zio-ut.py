@@ -29,6 +29,7 @@ test_list = [
     "test.trigger.hrt.FireSecond",
     "test.trigger.hrt.PeriodAndSlack",
     "test.interface.ReadPolicy",
+    "test.trigger.timer.Phase",
              ]
 
 def zio_test_help():
