@@ -30,6 +30,7 @@ test_list = [
     "test.trigger.hrt.PeriodAndSlack",
     "test.interface.ReadPolicy",
     "test.interface.WritePolicy",
+    "test.interface.ConcurrentRead",
     "test.trigger.timer.Phase",
              ]
 
