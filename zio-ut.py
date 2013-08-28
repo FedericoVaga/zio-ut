@@ -29,6 +29,7 @@ test_list = [
     "test.trigger.hrt.FireSecond",
     "test.trigger.hrt.PeriodAndSlack",
     "test.interface.ReadPolicy",
+    "test.interface.WritePolicy",
     "test.trigger.timer.Phase",
              ]
 
