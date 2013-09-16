@@ -6,14 +6,9 @@
 
 # # # # # # SYSFS configuration # # # # # # # #
 
-# Test buffer
-default_buffer = "kmalloc"
-
-# The trigger associated to the post-sample test
-pre_post_sample_trigger = "timer"
-
-# The buffer associated to the buffer len size tests
-test_size_buffer = "kmalloc"
+# default buffer and trigger
+trig = "timer"
+buf = "kmalloc"
 
 # The buffer maximum lenght
 buffer_max_len = 16
@@ -27,7 +22,7 @@ n_block_overflow = 100
 kb_overflow = 128
 
 # Number of repetitions of a test on stress test
-stress_repetitions = 100
+nstress = 100
 
 # ms-period of trigger timer when used
 timer_ms_period = 100

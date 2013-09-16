@@ -15,8 +15,8 @@ path = os.path.join(devices_path, "zzero-0000")
 
 @unittest.skipIf(not (os.path.exists(path) and os.path.isdir(path)),
                  "zio zero is not loaded")
-@unittest.skipIf(not (config.default_buffer in buffers),
-                 "Buffer '" + config.default_buffer + "' " + \
+@unittest.skipIf(not (config.buf in buffers),
+                 "Buffer '" + config.buf + "' " + \
                  "is required for this test")
 @unittest.skipIf(not ("hrt" in triggers),
                  "Trigger 'hrt' is required for this test")
@@ -41,7 +41,7 @@ class WritePolicy(unittest.TestCase):
         self.trigger = self.cset.trigger
 
         # Set and flush buffer
-        self.cset.set_current_buffer(config.default_buffer)
+        self.cset.set_current_buffer(config.buf)
         self.chan.buffer.flush()
 
         # Enable trigger
@@ -61,7 +61,7 @@ class WritePolicy(unittest.TestCase):
 
 
     def test_write_stress(self):
-        for _i in range(config.stress_repetitions):
+        for _i in range(config.nstress):
             self.test_write();
             self.interface.close_ctrl_data()
 

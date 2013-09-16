@@ -28,5 +28,5 @@ class ZioModule(unittest.TestCase, GenericModuleLoader):
         """
         It performs a stress test on the load/unload of the zio core module
         """
-        for _i in range(config.stress_repetitions):  # stress module load
+        for _i in range(config.nstress):  # stress module load
             self.test_load_unload_zio()

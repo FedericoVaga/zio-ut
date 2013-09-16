@@ -25,7 +25,9 @@ class CurrentTrigger(unittest.TestCase):
         if self.device == None:
             self.skipTest("Missing device, cannot run tests")
 
-        self.sw_trigger = ("timer", "hrt", "user")
+        for cset in self.device.cset:
+            cset.set_current_trigger("user")
+        print("Running test with: {0}".format(config.trig))
 
     def test_change_trigger(self):
         """
@@ -41,16 +43,16 @@ class CurrentTrigger(unittest.TestCase):
 
     def test_stress_change_trigger(self):
         """
-        It performs the test_change_trigger 1000 times
+        It performs the test_change_trigger 'nstress' times
         """
-        for _i in range(config.stress_repetitions):
+        for _i in range(config.nstress):
             self.test_change_trigger()
 
     def test_stress_change_trigger_carefully(self):
         """
-        It performs the test_change_trigger_carefully 1000 times
+        It performs the test_change_trigger_carefully 'nstress' times
         """
-        for _i in range(config.stress_repetitions):
+        for _i in range(config.nstress):
             self.test_change_trigger_carefully()
 
 
@@ -69,17 +71,16 @@ class CurrentTrigger(unittest.TestCase):
         for cset in self.device.cset:
             otrig = cset.get_current_trigger()
 
-            for trig in self.sw_trigger:
-                if careful:
-                    cset.trigger.disable()
+            if careful:
+                cset.trigger.disable()
 
-                cset.set_current_trigger(trig)
-                ctrig = cset.get_current_trigger()
+            cset.set_current_trigger(config.trig)
+            ctrig = cset.get_current_trigger()
 
-                self.assertEqual(trig, ctrig, \
-                    "Setted '{0}' but get '{1}'".format(trig, ctrig))
-                if (careful == True):
-                    cset.trigger.enable()
+            self.assertEqual(config.trig, ctrig, \
+                "Setted '{0}' but get '{1}'".format(config.trig, ctrig))
+            if (careful == True):
+                cset.trigger.enable()
 
             # Restore the origianl trigger
             cset.set_current_trigger(otrig)

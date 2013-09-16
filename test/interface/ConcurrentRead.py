@@ -17,8 +17,8 @@ path = os.path.join(devices_path, "zzero-0000")
 
 @unittest.skipIf(not (os.path.exists(path) and os.path.isdir(path)),
                  "zio zero is not loaded")
-@unittest.skipIf(not (config.default_buffer in buffers),
-                 "Buffer '" + config.default_buffer + "' " + \
+@unittest.skipIf(not (config.buf in buffers),
+                 "Buffer '" + config.buf + "' " + \
                  "is required for this test")
 @unittest.skipIf(not ("timer" in triggers),
                  "Trigger 'timer' is required for this test")
@@ -44,7 +44,7 @@ class ConcurrentRead(unittest.TestCase):
         self.trigger.attribute["ms-period"].set_value(config.timer_ms_period);
 
         # Set and flush buffer
-        self.cset.set_current_buffer(config.default_buffer)
+        self.cset.set_current_buffer(config.buf)
         self.chan.buffer.flush()
         self.chan.buffer.attribute["max-buffer-len"].set_value(512)
 

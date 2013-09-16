@@ -16,8 +16,7 @@ path = os.path.join(devices_path, "zzero-0000")
 
 @unittest.skipIf(not (os.path.exists(path) and os.path.isdir(path)),
                  "zio zero is not loaded")
-@unittest.skipIf(not (config.test_size_buffer in buffers),
-                 "Buffer '" + config.test_size_buffer + "' " + \
+@unittest.skipIf(not (config.buf in buffers), "Buffer '" + config.buf + "' " + \
                  "is required for this test")
 @unittest.skipIf(not ("hrt" in triggers),
                  "Trigger 'hrt' is required for this test")
@@ -44,7 +43,7 @@ class Size(unittest.TestCase):
         self.trigger = self.cset.trigger
 
         # Set and flush buffer
-        self.cset.set_current_buffer(config.test_size_buffer)
+        self.cset.set_current_buffer(config.buf)
         self.chan.buffer.flush()
         self.chan.attribute["alarms"].set_value(0xFF)
 
@@ -157,4 +156,3 @@ class Size(unittest.TestCase):
 
         ready = self.interface.is_device_ready()
         self.assertFalse(ready, "'vmalloc' should be empty")
-

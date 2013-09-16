@@ -5,7 +5,7 @@
 @license: GPLv2
 """
 from PyZio.ZioConfig import devices_path, triggers
-
+from test import setup
 import unittest
 import sys
 from PyZio import ZioUtil
@@ -73,6 +73,8 @@ if __name__ == '__main__':
         print("Invalid module name in: ")
         print(module_list)
         exit()
+
+    setup.parse_environment()
 
     # Perform tests of retrieved modules
     for s in suite:

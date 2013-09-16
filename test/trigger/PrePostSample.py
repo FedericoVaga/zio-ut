@@ -15,8 +15,8 @@ path = os.path.join(devices_path, "zzero-0000")
 
 @unittest.skipIf(not (os.path.exists(path) and os.path.isdir(path)),
                  "zio zero is not loaded")
-@unittest.skipIf(not (config.pre_post_sample_trigger in triggers),
-                 "Trigger '" + config.pre_post_sample_trigger + "'" + \
+@unittest.skipIf(not (config.trig in triggers),
+                 "Trigger '" + config.trig + "'" + \
                  "is required for this test")
 class PrePostSample(unittest.TestCase):
     """
@@ -35,7 +35,7 @@ class PrePostSample(unittest.TestCase):
         self.chan = self.cset.chan[0]
         self.interface = self.chan.interface
 
-        self.cset.set_current_trigger(config.pre_post_sample_trigger)
+        self.cset.set_current_trigger(config.trig)
         self.trigger = self.cset.trigger
 
         self.trigger.disable()
@@ -44,7 +44,7 @@ class PrePostSample(unittest.TestCase):
 
         self.chan.interface.open_ctrl_data(os.O_RDONLY)  # Open control cdev
 
-        if config.pre_post_sample_trigger == "timer":
+        if config.trig == "timer":
             self.trigger.attribute["ms-period"].set_value(config.timer_ms_period_fast)
 
 
@@ -116,9 +116,9 @@ class PrePostSample(unittest.TestCase):
 
 
     def program_fires(self):
-        if config.pre_post_sample_trigger == "hrt":
+        if config.trig == "hrt":
             self.trigger.attribute["exp-scalar-h"].set_value(0)  # Fire now
-        elif config.pre_post_sample_trigger == "timer":
+        elif config.trig == "timer":
             time.sleep(config.timer_ms_period_fast / 500.0)
 
 

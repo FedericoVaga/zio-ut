@@ -15,8 +15,8 @@ path = os.path.join(devices_path, "zzero-0000")
 
 @unittest.skipIf(not (os.path.exists(path) and os.path.isdir(path)),
                  "zio zero is not loaded")
-@unittest.skipIf(not (config.default_buffer in buffers),
-                 "Buffer '" + config.default_buffer + "' " + \
+@unittest.skipIf(not (config.buf in buffers),
+                 "Buffer '" + config.buf + "' " + \
                  "is required for this test")
 @unittest.skipIf(not ("timer" in triggers),
                  "Trigger 'timer' is required for this test")
@@ -29,7 +29,7 @@ class Flush(unittest.TestCase):
 
         # Set and flush buffer
         for cset in self.device.cset:
-            cset.set_current_buffer(config.default_buffer)
+            cset.set_current_buffer(config.buf)
 
         # Set and configure 'timer' trigger on all channel set
         for cset in self.device.cset:

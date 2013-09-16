@@ -44,7 +44,7 @@ class CurrentBuffer(unittest.TestCase):
         """
         It performs the test_change_buffer 1000 times
         """
-        for _i in range(config.stress_repetitions):
+        for _i in range(config.nstress):
             self.test_change_buffer()
 
 
@@ -52,7 +52,7 @@ class CurrentBuffer(unittest.TestCase):
         """
         It performs the test_change_buffer_carefully 1000 times
         """
-        for _i in range(config.stress_repetitions):
+        for _i in range(config.nstress):
             self.test_change_buffer_carefully()
 
 
