@@ -17,8 +17,8 @@ class BufVmallocModule(unittest.TestCase, GenericModuleLoader):
         It loads all dependencies before start the test
         """
         self.module_name = "zio-buf-vmalloc"
-        self.module_dep = ["zio",]
-        
+        self.module_dep = ["zio", ]
+
         for d in self.module_dep:
             err = self._do_insmod(d)
             if err != "":
@@ -41,10 +41,10 @@ class BufVmallocModule(unittest.TestCase, GenericModuleLoader):
         self._test_load_unload(self.module_name)
 
 
-    @unittest.skipIf(config.skip_long_test, "Skip very test")
+    @unittest.skipIf(config.skip_long_test, "Skip long test")
     def test_load_unload_vmalloc_stress(self):
         """
         It performs a stress test on the load/unload of the vmalloc buffer
         """
-        for _i in range(config.stress_repetitions): # stress module load
+        for _i in range(config.stress_repetitions):  # stress module load
             self.test_load_unload_vmalloc()
