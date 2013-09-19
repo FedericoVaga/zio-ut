@@ -42,6 +42,7 @@ class Phase(unittest.TestCase):
 
         # Open char devices
         self.chan.interface.open_ctrl_data(os.O_RDONLY)
+        sys.stdout.write("\n")
 
 
     def tearDown(self):
@@ -68,7 +69,10 @@ class Phase(unittest.TestCase):
         self.trigger.attribute["ms-phase"].set_value(msec)
 
         # find synchonization point
-        for _i in range(1000):
+        sys.stdout.write("Syncing ")
+        sys.stdout.flush()
+        for i in range(10):
+            sys.stdout.write(str(i))
             if not self.interface.is_device_ready(1):
                 break
             tstamp = self.interface.read_ctrl().tstamp
@@ -79,7 +83,12 @@ class Phase(unittest.TestCase):
         if not sync:
             self.fail("Synchonization failed")
 
-        for _i in range(10):
+        sys.stdout.write(" done!\n")
+        sys.stdout.flush()
+
+        for _i in range(config.nstress):
+            sys.stdout.write(".")
+            sys.stdout.flush()
             ready = self.interface.is_device_ready(1.2)
             self.assertTrue(ready, "Trigger does not fire, or black was lost")
             tstamp = self.interface.read_ctrl().tstamp
