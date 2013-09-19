@@ -62,7 +62,7 @@ class PeriodAndSlack(unittest.TestCase):
         prepare some random periods to test. The real test is performed by
         the internal function '_test_period()'
         """
-        timers = utils.generate_random_ZioTimeStamp(10, 0, 4, 1000, 999999999)
+        timers = utils.generate_random_ZioTimeStamp(config.nrandom, 0, 4, 1000, 999999999)
 
         extra_time = 0.0
         for period in timers:
@@ -100,7 +100,7 @@ class PeriodAndSlack(unittest.TestCase):
                       ]
 
         for slack in slack_list:
-            sys.stdout.write(".")
+            sys.stdout.write(str(slack) + ", ")
             sys.stdout.flush()
             self._test_slack_value(slack)
             tstamp = ZioTimeStamp(0, 100000000, 0);
@@ -147,12 +147,14 @@ class PeriodAndSlack(unittest.TestCase):
         fire_old = utils.convert_ZioTimeStamp_to_ns(tstamp)
 
         # Read all blocks from the buffer
+        i = 0
         while self.interface.is_device_ready(0.01):
+            i += 1
             tstamp = self.interface.read_ctrl().tstamp;
             fire_new = utils.convert_ZioTimeStamp_to_ns(tstamp)
 
             measured_period = fire_new - fire_old;
             delta = abs(measured_period - period_ns)
             self.assertLess(delta, slack,
-                            "period {0}, measured period {1}, delta {2}, tollerance {3}".format(period_ns, measured_period, delta, slack))
+                            "{4}) period {0}, measured period {1}, delta {2}, tollerance {3}".format(period_ns, measured_period, delta, slack, i))
             fire_old = fire_new
