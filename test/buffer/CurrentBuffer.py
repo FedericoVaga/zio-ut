@@ -7,7 +7,7 @@
 from PyZio.ZioConfig import devices_path, buffers
 from PyZio.ZioDev import ZioDev
 from test import config, utils
-import os, time, unittest
+import os, sys, unittest
 
 path = os.path.join(devices_path, "zzero-0000")
 
@@ -60,16 +60,24 @@ class CurrentBuffer(unittest.TestCase):
         """
         It performs the test_change_buffer 1000 times
         """
+        sys.stdout.write("\n")
         for _i in range(config.nstress):
+            sys.stdout.write(".")
+            sys.stdout.flush()
             self.test_change_buffer()
+        sys.stdout.write("\n")
 
 
     def test_stress_change_buffer_carefully(self):
         """
         It performs the test_change_buffer_carefully 1000 times
         """
+        sys.stdout.write("\n")
         for _i in range(config.nstress):
+            sys.stdout.write(".")
+            sys.stdout.flush()
             self.test_change_buffer_carefully()
+        sys.stdout.write("\n")
 
 
     def _test_change_buffer(self, careful):
