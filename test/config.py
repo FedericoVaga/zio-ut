@@ -24,6 +24,9 @@ kb_overflow = 128
 # Number of repetitions of a test on stress test
 nstress = 100
 
+# Number of random value to use on test
+nrandom = 10
+
 # ms-period of trigger timer when used
 timer_ms_period = 100
 timer_ms_period_fast = 50

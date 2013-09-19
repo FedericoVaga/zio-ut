@@ -68,8 +68,8 @@ class Overflow(unittest.TestCase):
         It tests the buffer overflow with a random combination of lenght and
         buffer size.
         """
-        lst1 = utils.random_list(1, 32, 10)
-        lst2 = utils.random_list(1, 32, 10)
+        lst1 = utils.random_list(1, 32, config.nrandom)
+        lst2 = utils.random_list(1, 32, config.nrandom)
         for buf_len, buf_kb in zip(lst1, lst2):
             self._test_overflow(buf_len, buf_kb, 0.050)
 

@@ -10,6 +10,7 @@ def parse_environment():
     config.trig = _set_variable(config.trig, "trig")
     config.buf = _set_variable(config.buf, "buf")
     config.nstress = _set_variable(config.nstress, "nstress")
+    config.nrandom = int(_set_variable(config.nrandom, "nrandom"))
 
 
 def _set_variable(var, name):

@@ -65,7 +65,7 @@ class Size(unittest.TestCase):
         generated. The test is performed with an empty buffer.
         """
         sys.stdout.write("\n")
-        sizes = utils.random_list(1, 1024, 1000)
+        sizes = utils.random_list(1, 1024, config.nrandom)
         prev = 16
         for size in sizes:
             sys.stdout.write(".")
