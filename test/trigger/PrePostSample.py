@@ -47,10 +47,13 @@ class PrePostSample(unittest.TestCase):
         if config.trig == "timer":
             self.trigger.attribute["ms-period"].set_value(config.timer_ms_period_fast)
 
+        sys.stdout.write("\n")
+
 
     def tearDown(self):
         self.chan.interface.close_ctrl_data()  # Close control cdev
         self.trigger.disable()
+        sys.stdout.write("\n")
 
 
     def test_pre_samples(self):
@@ -61,7 +64,7 @@ class PrePostSample(unittest.TestCase):
         if not "pre-samples" in self.trigger.attribute:
             self.skipTest("No pre-samples to set.")
 
-        pre = utils.random_list(2, 1024, 100)  # Get a random list of value
+        pre = utils.random_list(2, 1024, config.nrandom)  # Get a random list of value
         for p in pre:
             self._test_sysfs_value(self.trigger, "pre-samples", p)
             if "post-samples" in self.trigger.attribute:  # Disable 'post-sample'
@@ -77,7 +80,7 @@ class PrePostSample(unittest.TestCase):
         if not "post-samples" in self.trigger.attribute:
             self.skipTest("No post-samples to set.")
 
-        post = utils.random_list(2, 1024, 100)  # Get a random list of value
+        post = utils.random_list(2, 1024, config.nrandom)  # Get a random list of value
         for p in post:
             self._test_sysfs_value(self.trigger, "post-samples", p)
             if "pre-samples" in self.trigger.attribute:  # Disable 'pre-sample'
@@ -95,8 +98,8 @@ class PrePostSample(unittest.TestCase):
                 ("post-samples" in self.trigger.attribute)):
             self.skipTest("No pre-samples and post-samples to set.")
 
-        pres = utils.random_list(2, 1024, 100)
-        posts = utils.random_list(2, 1024, 100)
+        pres = utils.random_list(2, 1024, config.nrandom)
+        posts = utils.random_list(2, 1024, config.nrandom)
 
         for pre, post in zip(pres, posts):
             self._test_sysfs_value(self.trigger, "pre-samples", pre)
@@ -129,7 +132,6 @@ class PrePostSample(unittest.TestCase):
         """
         self.chan.buffer.flush()
 
-        sys.stdout.write("\n")
         for _i in range(10):
             sys.stdout.write(".")
             sys.stdout.flush()
@@ -148,4 +150,3 @@ class PrePostSample(unittest.TestCase):
                 self.assertEqual(post, ctrl.attr_trigger.std_val[1], "The number of expected post samples should be {0} but it is {1}".format(post, ctrl.attr_trigger.std_val[1]))
             if ctrl.attr_trigger.std_mask & (1 << 2):
                 self.assertEqual(pre, ctrl.attr_trigger.std_val[2], "The number of expecte pre samples should be {0} but it is {1}".format(pre, ctrl.attr_trigger.std_val[2]))
-        sys.stdout.write("\n")
