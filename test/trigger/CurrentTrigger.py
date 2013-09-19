@@ -27,7 +27,7 @@ class CurrentTrigger(unittest.TestCase):
 
         for cset in self.device.cset:
             cset.set_current_trigger("user")
-        print("Running test with: {0}".format(config.trig))
+
 
     def test_change_trigger(self):
         """
