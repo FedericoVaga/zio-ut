@@ -65,6 +65,8 @@ class FireSecond(unittest.TestCase):
         utils.calculate_test_time_timers(timers)
 
         for ztstamp in timers:
+            sys.stdout.write(".")
+            sys.stdout.flush()
             self._test_fire_absolute(ztstamp)
 
 
@@ -97,6 +99,8 @@ class FireSecond(unittest.TestCase):
         utils.calculate_test_time_timers(timers)
 
         for ztstamp in timers:
+            sys.stdout.write(".")
+            sys.stdout.flush()
             self._test_fire_relative(ztstamp)
 
 
