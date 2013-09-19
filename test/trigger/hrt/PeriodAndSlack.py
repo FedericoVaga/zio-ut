@@ -89,9 +89,8 @@ class PeriodAndSlack(unittest.TestCase):
 
     def test_slack(self):
         """
-        It test that the HRT trigger slack is observed by the timer. The test
-        uses 'config.time_tollerance_period_ns' as first slack to test, following
-        test iterations will use half the time of the previous one.
+        It tests that the HRT trigger slack is observed by the timer. The test
+        uses a serie of decreasing slack times.
         """
         slack_list = [1000000000,
                       16000000, 8000000, 4000000, 2000000, 1000000,
