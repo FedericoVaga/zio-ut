@@ -6,9 +6,8 @@
 
 from PyZio.ZioConfig import devices_path, buffers
 from PyZio.ZioDev import ZioDev
-from test import config
-import unittest
-import os
+from test import config, utils
+import os, time, unittest
 
 path = os.path.join(devices_path, "zzero-0000")
 
@@ -23,7 +22,24 @@ class CurrentBuffer(unittest.TestCase):
         if self.device == None:
             self.skipTest("Missing device, cannot run tests")
 
+        # Set channel set and channel to use
+        self.cset = self.device.cset[0]  # Use cset input8
+        self.chan = self.cset.chan[0]
+        self.interface = self.chan.interface
+
+        # Set and configure 'hrt' trigger
+        self.cset.set_current_trigger("hrt")
+        self.trigger = self.cset.trigger
+
+        # Enable trigger
+        self.trigger.enable()
+
         self.sw_buffer = ("vmalloc", "kmalloc")
+
+
+    def tearDown(self):
+        self.trigger.disable()
+        self.interface.close_ctrl_data()  # Close control cdev
 
 
     def test_change_buffer(self):
@@ -65,21 +81,30 @@ class CurrentBuffer(unittest.TestCase):
         without any precaution
         """
 
-        # Perform test on every channel set
-        for cset in self.device.cset:
-            obuf = cset.get_current_buffer()
+        obuf = self.cset.get_current_buffer()
 
-            for buf in self.sw_buffer:
-                if careful:
-                    cset.trigger.disable()
+        for buf in self.sw_buffer:
+            if careful:
+                self.trigger.disable()
 
-                cset.set_current_buffer(buf)
-                cbuf = cset.get_current_buffer()
-                self.assertEqual(buf, cbuf, \
-                        "Setted '{0}' but get '{1}'".format(buf, cbuf))
+            utils.trigger_hrt_fill_buffer(self.trigger, 5)
 
-                if careful:
-                    cset.trigger.enable()
+            self.cset.set_current_buffer(buf)
+            cbuf = self.cset.get_current_buffer()
+            self.assertEqual(buf, cbuf, \
+                    "Setted '{0}' but get '{1}'".format(buf, cbuf))
 
-            # Restore the origianl buffer
-            cset.set_current_buffer(obuf)
+            if obuf != cbuf:
+                # Open control char device
+                self.interface.open_ctrl_data(os.O_RDONLY)
+                ready = self.interface.is_device_ready(1)
+                self.interface.close_ctrl_data()  # Close control cdev
+
+                self.assertFalse(ready, "Buffer should be empty on change")
+
+            if careful:
+                self.cset.trigger.enable()
+
+        # Restore the origianl buffer
+        self.cset.set_current_buffer(obuf)
+
