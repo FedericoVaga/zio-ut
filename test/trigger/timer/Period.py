@@ -6,10 +6,10 @@
 
 from PyZio.ZioConfig import devices_path, triggers
 from PyZio.ZioDev import ZioDev
-
+from test import config
 import unittest
 import random
-import os
+import os, sys
 
 path = os.path.join(devices_path, "zzero-0000")
 
@@ -52,6 +52,7 @@ class Period(unittest.TestCase):
     def tearDown(self):
         self.chan.interface.close_ctrl_data()  # Close control cdev
         self.trigger.disable()
+        sys.stdout.write("\n")
 
     def test_periods(self):
         """
@@ -60,7 +61,7 @@ class Period(unittest.TestCase):
         periods = []
         total = 0
         for _i in range(10):
-            rnd = random.randrange(50, 1500, 50)  # Create random period
+            rnd = random.randrange(50, 1500, config.nrandom)  # Create random period
             periods.append(rnd)  # and append to a list
             total += (rnd * self.n_block_test)
 
@@ -81,6 +82,8 @@ class Period(unittest.TestCase):
         self.trigger.enable()  # Enable the trigger
 
         for _i in range(self.n_block_test):
+            sys.stdout.write(".")
+            sys.stdout.flush()
             wait = period / 1000 + 2
             if self.interface.is_device_ready(wait) == False:
                 self.fail("Select timeout")
