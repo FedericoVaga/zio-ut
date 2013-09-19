@@ -56,6 +56,7 @@ class CurrentBuffer(unittest.TestCase):
         self._test_change_buffer(True)
 
 
+    @unittest.skipIf(config.skip_long_test, "Skip long test")
     def test_stress_change_buffer(self):
         """
         It performs the test_change_buffer 1000 times
@@ -68,6 +69,7 @@ class CurrentBuffer(unittest.TestCase):
         sys.stdout.write("\n")
 
 
+    @unittest.skipIf(config.skip_long_test, "Skip long test")
     def test_stress_change_buffer_carefully(self):
         """
         It performs the test_change_buffer_carefully 1000 times
