@@ -93,7 +93,7 @@ class FireSecond(unittest.TestCase):
         """
         It test that the HRT trigger fires at the given programmed
         time (sec.nsec) relative to the current second. This mean that only
-        sec is calculated relativeto the current second, the nsec are absolute
+        sec is calculated relative to the current second, the nsec are absolute
         """
         timers = utils.generate_random_ZioTimeStamp(10, 0, 3, 0, 999999999)
         utils.calculate_test_time_timers(timers)
@@ -126,7 +126,7 @@ class FireSecond(unittest.TestCase):
 
     def test_past_timer(self):
         """
-        It tests that the trigger immediatly fire if the user program a timer
+        It tests that the trigger immediately fire if the user program a timer
         in the past
         """
         self.trigger.attribute["exp-nsec"].set_value(0)
