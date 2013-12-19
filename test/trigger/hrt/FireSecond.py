@@ -95,7 +95,7 @@ class FireSecond(unittest.TestCase):
         time (sec.nsec) relative to the current second. This mean that only
         sec is calculated relativeto the current second, the nsec are absolute
         """
-        timers = utils.generate_random_ZioTimeStamp(10, 0, 16, 0, 999999999)
+        timers = utils.generate_random_ZioTimeStamp(10, 0, 3, 0, 999999999)
         utils.calculate_test_time_timers(timers)
 
         for ztstamp in timers:
