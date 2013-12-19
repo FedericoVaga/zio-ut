@@ -47,6 +47,8 @@ class FireSecond(unittest.TestCase):
         # Open control char device
         self.interface.open_ctrl_data(os.O_RDONLY)
 
+        self.trigger.disable()
+        self.chan.buffer.flush()
         self.trigger.enable()
 
     def tearDown(self):
