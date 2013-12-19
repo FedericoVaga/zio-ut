@@ -127,15 +127,3 @@ class FireScalar(unittest.TestCase):
 
         self.assertLess(delta, config.hrt_slack_nsec,
             "programmed {0}ns, fired at {1}ns, delta {2}ns < tollerance {3}ns".format(nsec, block_nsec, delta, config.hrt_slack_nsec))
-
-
-    def test_past_timer(self):
-        """
-        It tests that the trigger immediatly fire if the user program a timer
-        in the past
-        """
-        self.trigger.attribute["exp-scalar-l"].set_value(0)
-        self.trigger.attribute["exp-scalar-h"].set_value(1)
-
-        ready = self.interface.is_device_ready(0.001)  # wait only 1ms
-        self.assertTrue(ready, "Trigger does not fire, or black was lost")

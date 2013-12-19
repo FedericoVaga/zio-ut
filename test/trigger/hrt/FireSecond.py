@@ -124,15 +124,3 @@ class FireSecond(unittest.TestCase):
             "Programmed second {0}, but it fire at {1}".format(sec, block_tstamp.seconds))
         self.assertLess(delta, config.hrt_slack_nsec,
             "programmed {0}ns, fired in {1}ns, delta {2}ns < tollerance {3}ns".format(nsec, block_nsec, delta, config.hrt_slack_nsec))
-
-
-    def test_past_timer(self):
-        """
-        It tests that the trigger immediately fire if the user program a timer
-        in the past
-        """
-        self.trigger.attribute["exp-nsec"].set_value(0)
-        self.trigger.attribute["exp-sec"].set_value(4000)
-
-        ready = self.interface.is_device_ready(0.001)  # wait only 1ms
-        self.assertTrue(ready, "Trigger does not fire, or black was lost")

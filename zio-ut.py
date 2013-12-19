@@ -30,6 +30,7 @@ test_list = [
     "test.trigger.hrt.FireScalar",
     "test.trigger.hrt.FireSecond",
     "test.trigger.hrt.PeriodAndSlack",
+    "test.trigger.hrt.FireTime",
     "test.interface.ReadPolicy",
     "test.interface.WritePolicy",
     "test.interface.ConcurrentRead",
