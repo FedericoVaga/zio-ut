@@ -110,9 +110,9 @@ class Size(unittest.TestCase):
 
     def _test_resize_buffer(self, nfill, init_size, target_size):
         if config.buf == "kmalloc":
-            self._test_resize_kmalloc_buffer(nfill, init_size, target_size);
+            self._test_resize_kmalloc_buffer(nfill, init_size, target_size)
         elif config.buf == "vmalloc":
-            self._test_resize_vmalloc_buffer(nfill, init_size, target_size);
+            self._test_resize_vmalloc_buffer(nfill, init_size, target_size)
 
 
     def _test_resize_kmalloc_buffer(self, nfill, init_size, target_size):

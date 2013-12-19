@@ -37,7 +37,7 @@ class FireScalar(unittest.TestCase):
         # Set and configure 'hrt' trigger
         self.cset.set_current_trigger("hrt")
         self.trigger = self.cset.trigger
-        self.trigger.attribute["slack-ns"].set_value(config.hrt_slack_nsec);
+        self.trigger.attribute["slack-ns"].set_value(config.hrt_slack_nsec)
 
 
         # Set and configure 'kmalloc' buffer
@@ -85,7 +85,7 @@ class FireScalar(unittest.TestCase):
         ready = self.interface.is_device_ready(ztstamp.seconds + 5)
         self.assertTrue(ready, "Trigger does not fire, or black was lost")
 
-        block_tstamp = self.interface.read_ctrl().tstamp;
+        block_tstamp = self.interface.read_ctrl().tstamp
         block_nsec = utils.convert_ZioTimeStamp_to_ns(block_tstamp)
         delta = abs(block_nsec - nsec)
 
@@ -121,7 +121,7 @@ class FireScalar(unittest.TestCase):
         ready = self.interface.is_device_ready(ztstamp.seconds + 5)
         self.assertTrue(ready, "Trigger does not fire, or black was lost")
 
-        block_tstamp = self.interface.read_ctrl().tstamp;
+        block_tstamp = self.interface.read_ctrl().tstamp
         block_nsec = utils.convert_ZioTimeStamp_to_ns(block_tstamp)
         delta = abs(block_nsec - nsec)
 

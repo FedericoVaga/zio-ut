@@ -87,7 +87,7 @@ class ReadPolicy(unittest.TestCase):
         configuration parameter stress_repetitions
         """
         for _i in range(config.nstress):
-            self.test_read();
+            self.test_read()
             self.interface.close_ctrl_data()
 
 

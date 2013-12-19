@@ -37,7 +37,7 @@ class FireSecond(unittest.TestCase):
         # Set and configure 'hrt' trigger
         self.cset.set_current_trigger("hrt")
         self.trigger = self.cset.trigger
-        self.trigger.attribute["slack-ns"].set_value(config.hrt_slack_nsec);
+        self.trigger.attribute["slack-ns"].set_value(config.hrt_slack_nsec)
 
 
         # Set and configure 'kmalloc' buffer
@@ -81,7 +81,7 @@ class FireSecond(unittest.TestCase):
         ready = self.interface.is_device_ready(sec + 1)
         self.assertTrue(ready, "Trigger does not fire, or black was lost")
 
-        block_tstamp = self.interface.read_ctrl().tstamp;
+        block_tstamp = self.interface.read_ctrl().tstamp
         delta = abs(block_tstamp.ticks - ztstamp.ticks)
 
         self.assertEqual(sec, block_tstamp.seconds,
@@ -116,7 +116,7 @@ class FireSecond(unittest.TestCase):
         ready = self.interface.is_device_ready(ztstamp.seconds + 1)
         self.assertTrue(ready, "Trigger does not fire, or black was lost")
 
-        block_tstamp = self.interface.read_ctrl().tstamp;
+        block_tstamp = self.interface.read_ctrl().tstamp
         block_nsec = utils.convert_ZioTimeStamp_to_ns(block_tstamp)
         delta = abs(block_tstamp.ticks - ztstamp.ticks)
 
