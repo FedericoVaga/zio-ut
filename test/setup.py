@@ -9,7 +9,7 @@ import os
 def parse_environment():
     config.trig = _set_variable(config.trig, "trig")
     config.buf = _set_variable(config.buf, "buf")
-    config.nstress = _set_variable(config.nstress, "nstress")
+    config.nstress = int(_set_variable(config.nstress, "nstress"))
     config.nrandom = int(_set_variable(config.nrandom, "nrandom"))
 
     config.timer_ms_period = int(_set_variable(config.timer_ms_period, \
