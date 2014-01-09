@@ -16,6 +16,7 @@ test_list = [
     "test.module.BufferModule.BufVmallocModule",
     "test.module.TriggerModule.TrigTimerModule",
     "test.module.TriggerModule.TrigHrtModule",
+    "test.sysfs.Attribute",
     "test.sysfs.Enable",
     "test.sysfs.CurrentControl",
     "test.buffer.CurrentBuffer",
