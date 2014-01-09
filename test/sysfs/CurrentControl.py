@@ -8,6 +8,7 @@ from PyZio.ZioConfig import devices_path, triggers
 from PyZio.ZioDev import ZioDev
 from test import utils, config
 import unittest
+import sys
 import os
 
 path = os.path.join(devices_path, "zzero-0000")
@@ -27,28 +28,28 @@ class CurrentControl(unittest.TestCase):
             self.skipTest("Missing device, cannot run tests")
 
         # Set channel set and channel to use
-        self.cset = self.device.cset[0]  # Use cset input8
+        self.cset = self.device.cset[2]  # Use cset input32
         self.chan = self.cset.chan[0]
         self.interface = self.chan.interface
 
         # Set and configure 'hrt' trigger
         self.cset.set_current_trigger("hrt")
         self.trigger = self.cset.trigger
-        self.trigger.attribute["slack-ns"].set_value(config.hrt_slack_nsec);
 
         # Empty buffer
-        self.chan.buffer.flush()
+        self.trigger.disable()
+        self.buffer = self.chan.buffer
+        self.buffer.flush()
 
         # Open control char device
         self.interface.open_ctrl_data(os.O_RDONLY)
 
         self.trigger.enable()
-
+        sys.stdout.write("\n")
 
     def tearDown(self):
         self.interface.close_ctrl_data()  # Close control cdev
         self.trigger.disable()
-
 
     def test_cmp_cdev_current_control(self):
         """
@@ -57,11 +58,13 @@ class CurrentControl(unittest.TestCase):
         must have the control side equal to the current-control of the same
         channel
         """
-
         ctrl_prev = None
 
         # Read control one by one
         for i in range(config.n_block_load):
+            sys.stdout.write(".")
+            sys.stdout.flush()
+
             utils.trigger_hrt_fill_buffer(self.trigger, 1)
 
             ready = self.interface.is_device_ready(config.select_wait)
@@ -71,9 +74,9 @@ class CurrentControl(unittest.TestCase):
             ctrl_curr = self.chan.get_current_ctrl()
 
             self.assertNotEqual(ctrl_prev, ctrl_curr,
-                    "Previous control (block) cannot be equal to the current-control")
+                    "\n###Prev ctrl block###\n{0}\n\n###current-control###\n{1}".format(ctrl_cdev, ctrl_curr))
             self.assertEqual(ctrl_cdev, ctrl_curr,
-                    "Last control (block) must be equal to current-control")
+                    "\n###Last ctrl block###\n{0}\n###current-control###\n{1}".format(ctrl_cdev, ctrl_curr))
 
             ctrl_prev = ctrl_cdev
 
