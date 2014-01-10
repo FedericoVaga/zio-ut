@@ -138,7 +138,7 @@ class Size(unittest.TestCase):
             i += 1
             self.interface.read_ctrl()
 
-        self.assertEqual(i, nfill, "'kmalloc' does not remove blocks on resize")
+        self.assertEqual(i, nfill, "'kmalloc' does not remove blocks on resize ({0}, {1})".format(i, nfill))
 
 
     def _test_resize_vmalloc_buffer(self, nfill, init_size, target_size):
