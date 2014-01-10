@@ -70,11 +70,11 @@ class ReadPolicy(unittest.TestCase):
         """
 
         # Fill the buffer
-        utils.trigger_hrt_fill_buffer(self.trigger, 1, 0.1, True)
+        utils.trigger_hrt_fill_buffer(self.trigger, 1, 0, 1, 0.1, True)
 
         self.interface.open_ctrl_data(os.O_RDONLY)
         ready = self.interface.is_device_ready(0.01)
-        self.assertTrue(ready, "A block must be in the buffer")
+        self.assertTrue(ready[0], "A block must be in the buffer")
         ctrl, data = self.interface.read_block(True, True)
 
         self.assertEqual(ctrl.nsamples, len(data),
@@ -101,13 +101,13 @@ class ReadPolicy(unittest.TestCase):
         n_block = 10
 
         # Fill the buffer
-        utils.trigger_hrt_fill_buffer(self.trigger, n_block, 0.1, True)
+        utils.trigger_hrt_fill_buffer(self.trigger, n_block, 0, 1, 0.1, True)
 
         ctrl_old = None
         self.interface.open_ctrl(os.O_RDONLY)
         for _i in range(n_block):
             ready = self.interface.is_device_ready(0.01)
-            self.assertTrue(ready, "Blocks must be available")
+            self.assertTrue(ready[0], "Blocks must be available")
             ctrl_new = self.interface.read_ctrl()
 
             if ctrl_old == None:
@@ -121,7 +121,7 @@ class ReadPolicy(unittest.TestCase):
             ctrl_old = ctrl_new
 
         ready = self.interface.is_device_ready(0.01)
-        self.assertFalse(ready, "Buffer must be empty")
+        self.assertFalse(ready[0], "Buffer must be empty")
 
 
     def test_dobule_read_data(self):
@@ -135,23 +135,23 @@ class ReadPolicy(unittest.TestCase):
         n_block = 10
 
         # Fill the buffer
-        utils.trigger_hrt_fill_buffer(self.trigger, n_block, 0.1, True)
+        utils.trigger_hrt_fill_buffer(self.trigger, n_block, 0, 1, 0.1, True)
 
 
         self.interface.open_ctrl_data(os.O_RDONLY)
-        ready = self.interface.is_device_ready(0.01)
-        self.assertTrue(ready, "Blocks must be available")
+        ready = self.interface.is_device_ready(10)
+        self.assertTrue(ready[0], "Blocks must be available")
         self.interface.read_block(True, True)
         self.interface.close_ctrl_data()
 
         self.interface.open_data(os.O_RDONLY)
         for _i in range(n_block - 1):
-            ready = self.interface.is_device_ready(0.01)
-            self.assertTrue(ready, "Blocks must be available")
+            ready = self.interface.is_device_ready(10)
+            self.assertTrue(ready[0], "Blocks must be available")
             _data = self.interface.read_data()
 
-        ready = self.interface.is_device_ready(0.01)
-        self.assertFalse(ready, "Buffer must be empty")
+        ready = self.interface.is_device_ready(10)
+        self.assertFalse(ready[0], "Buffer must be empty")
 
 
     def test_control_read_size(self):
@@ -165,17 +165,17 @@ class ReadPolicy(unittest.TestCase):
         self.interface.open_ctrl_data(os.O_RDONLY)
         fd = self.interface.fileno_ctrl()
 
-        if self.interface.is_device_ready(0.01):
+        if self.interface.is_device_ready(10)[0]:
             with self.assertRaises(OSError):
                 os.read(fd, 256)
 
-        if self.interface.is_device_ready(0.01):
+        if self.interface.is_device_ready(10)[0]:
             try:
                 os.read(fd, 512)
             except:
                 self.fail("Reading 512byte should not fail")
 
-        if self.interface.is_device_ready(0.01):
+        if self.interface.is_device_ready(10)[0]:
             with self.assertRaises(OSError):
                 os.read(fd, 1024)
 

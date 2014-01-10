@@ -134,7 +134,7 @@ class Size(unittest.TestCase):
             "'max-buffer-len' should be {1}, but it is {0}".format(rb, target_size))
 
         i = 0
-        while self.interface.is_device_ready(0.1):
+        while self.interface.is_device_ready(0.1)[0]:
             i += 1
             self.interface.read_ctrl()
 
@@ -157,5 +157,6 @@ class Size(unittest.TestCase):
         self.assertEqual(target_size, rb,
             "'max-buffer-kb' should be {1}, but it is {0}".format(rb, target_size))
 
-        ready = self.interface.is_device_ready()
-        self.assertFalse(ready, "'vmalloc' should be empty")
+        ready = self.interface.is_device_ready(0)
+        self.assertFalse(ready[0], "'vmalloc' should be empty")
+        self.assertFalse(ready[1], "'vmalloc' should be empty")

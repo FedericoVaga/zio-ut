@@ -84,8 +84,8 @@ class Period(unittest.TestCase):
         for _i in range(self.n_block_test):
             sys.stdout.write(".")
             sys.stdout.flush()
-            wait = period / 1000 + 2
-            if self.interface.is_device_ready(wait) == False:
+            wait = period + 2000
+            if self.interface.is_device_ready(wait)[0] == False:
                 self.fail("Select timeout")
 
             ctrl = self.interface.read_ctrl()  # Read Control

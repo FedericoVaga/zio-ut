@@ -83,7 +83,7 @@ class Flush(unittest.TestCase):
         ready = chan.interface.is_device_ready(0)
         chan.interface.close_ctrl_data()
 
-        self.assertFalse(ready, "There should be no blocks")
+        self.assertFalse(ready[0], "There should be no blocks")
 
 
     def _test_flush_output(self, chan):

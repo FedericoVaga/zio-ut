@@ -137,7 +137,7 @@ class PrePostSample(unittest.TestCase):
             sys.stdout.flush()
             self.program_fires()
             ready = self.interface.is_device_ready(1)
-            self.assertTrue(ready, "Trigger does not fire, or black was lost")
+            self.assertTrue(ready[0], "Trigger '{0}' does not fire, or black was lost".format(config.trig))
 
             ctrl = self.interface.read_ctrl()
 

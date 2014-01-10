@@ -149,22 +149,22 @@ class Overflow(unittest.TestCase):
         # buffer to verify if it effectively stopped to store blocks on overflow
         for i in range(min(buf_max_len_list)):
             ready = self.interface.is_device_ready(config.select_wait)
-            self.assertTrue(ready, "Missing block {0}/{1}".format(i + 1, buffer_max_len))
+            self.assertTrue(ready[0], "Missing block {0}/{1}".format(i + 1, buffer_max_len))
             self.interface.read_ctrl()
             self.interface.read_data()
 
 
         # Now, no more block should be in the buffer
         ready = self.interface.is_device_ready(config.select_wait)
-        self.assertFalse(ready, "No more blocks should be in the buffer")
+        self.assertFalse(ready[0], "No more blocks should be in the buffer")
 
         # Fill the buffer with one block and then get the control that must has
         # the same sequence number of the current block and it is not
         # sequential with previous blocks
         utils.trigger_hrt_fill_buffer(self.trigger, 1)
         ready = self.interface.is_device_ready(config.select_wait)
-        self.assertTrue(ready, "There should be one block")
-        ctrl_cdev = self.interface.read_ctrl()
+        self.assertTrue(ready[0], "There should be one block")
+        ctrl_cdev, __data = self.interface.read_block()
 
         self.assertEqual(ctrl_curr_post.seq_num + 1, ctrl_cdev.seq_num,
             "Sequence number should be {0}, but it is {1}".format(ctrl_curr_post.seq_num + 1, ctrl_cdev.seq_num))

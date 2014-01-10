@@ -116,7 +116,7 @@ def _control_acquisition(proc_id, channel, queue):
     time.sleep(1)  # Sleep to allow all processes to start
     interface = ZioCharDevice(channel)
     interface.open_ctrl(os.O_RDONLY | os.O_NONBLOCK)
-    while interface.is_device_ready(0):
+    while interface.is_device_ready(0)[0]:
         try:
             block = (proc_id, interface.read_ctrl(), interface.read_data())
             queue.put(block)

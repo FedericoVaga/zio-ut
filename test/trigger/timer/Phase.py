@@ -62,18 +62,18 @@ class Phase(unittest.TestCase):
         self.chan.buffer.flush()  # Flush buffer
         self.trigger.enable()  # Enable the trigger
 
-        ready = self.interface.is_device_ready(1)
-        self.assertTrue(ready, "Expected block in the buffer")
+        ready = self.interface.is_device_ready(1000)
+        self.assertTrue(ready[0], "Expected block in the buffer")
         tstamp = self.interface.read_ctrl().tstamp
         msec = 1000 - int(tstamp.ticks / 1000000)
         self.trigger.attribute["ms-phase"].set_value(msec)
 
         # find synchonization point
-        sys.stdout.write("Syncing ")
-        sys.stdout.flush()
-        for i in range(10):
-            sys.stdout.write(str(i))
-            if not self.interface.is_device_ready(1):
+        print("Syncing ")
+        for _i in range(10):
+            sys.stdout.write(".")
+            sys.stdout.flush()
+            if not self.interface.is_device_ready(1000)[0]:
                 break
             tstamp = self.interface.read_ctrl().tstamp
             if int(tstamp.ticks / 1000000) < config.time_tollerance_msec:
@@ -89,8 +89,8 @@ class Phase(unittest.TestCase):
         for _i in range(config.nstress):
             sys.stdout.write(".")
             sys.stdout.flush()
-            ready = self.interface.is_device_ready(1.2)
-            self.assertTrue(ready, "Trigger does not fire, or black was lost")
+            ready = self.interface.is_device_ready(1200)
+            self.assertTrue(ready[0], "Trigger does not fire, or black was lost")
             tstamp = self.interface.read_ctrl().tstamp
             self.assertLess(int(tstamp.ticks / 1000000), config.time_tollerance_msec, "Alignment to seconds failed {0}".format(tstamp.ticks))
         self.trigger.disable()

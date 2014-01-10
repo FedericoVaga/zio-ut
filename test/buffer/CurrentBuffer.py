@@ -107,10 +107,11 @@ class CurrentBuffer(unittest.TestCase):
             if obuf != cbuf:
                 # Open control char device
                 self.interface.open_ctrl_data(os.O_RDONLY)
-                ready = self.interface.is_device_ready(1)
+                ready = self.interface.is_device_ready(0)
                 self.interface.close_ctrl_data()  # Close control cdev
 
-                self.assertFalse(ready, "Buffer should be empty on change")
+                self.assertFalse(ready[0], "Buffer should be empty on change")
+                self.assertFalse(ready[1], "Buffer should be empty on change")
 
             if careful:
                 self.cset.trigger.enable()

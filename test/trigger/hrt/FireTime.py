@@ -8,6 +8,7 @@ from PyZio.ZioConfig import devices_path, triggers
 from PyZio.ZioDev import ZioDev
 from test import config
 import unittest
+import time
 import sys
 import os
 from os.path import join, isdir, exists
@@ -87,14 +88,14 @@ class FireScalar(unittest.TestCase):
         """
         self._test_fire_now(False)
 
-    def test_fire_penging_scalar(self):
+    def test_fire_pending_scalar(self):
         """
         It test that the trigger programmed with the "scalar" parameters will
         fire when pending
         """
         self._test_fire_pending(True, 3)
 
-    def test_fire_penging_second(self):
+    def test_fire_pending_second(self):
         """
         It test that the trigger programmed with the "second" parameters will
         fire when pending
@@ -112,8 +113,8 @@ class FireScalar(unittest.TestCase):
         self.trigger.attribute[l_name].set_value(l_val)
         self.trigger.attribute[h_name].set_value(h_val)
 
-        ready = self.interface.is_device_ready(0.001)  # wait only 1ms
-        self.assertTrue(ready, "Trigger does not fire, or black was lost")
+        ready = self.interface.is_device_ready(1)  # wait only 1ms
+        self.assertTrue(ready[0], "Trigger does not fire, or black was lost")
 
 
     def _test_fire_now(self, is_scalar):
@@ -126,8 +127,8 @@ class FireScalar(unittest.TestCase):
         self.trigger.attribute[l_name].set_value(0)
         self.trigger.attribute[h_name].set_value(0)
 
-        ready = self.interface.is_device_ready(0.001)  # wait only 1ms
-        self.assertTrue(ready, "Trigger does not fire, or black was lost")
+        ready = self.interface.is_device_ready(1)  # wait only 1ms
+        self.assertTrue(ready[0], "Trigger does not fire, or black was lost")
 
 
     def _test_fire_pending(self, is_scalar, time_to_wait):
@@ -147,9 +148,10 @@ class FireScalar(unittest.TestCase):
         self.trigger.attribute[h_name].set_value(h_val)
 
         self.trigger.disable()
-        ready = self.interface.is_device_ready(time_to_wait * 2)
-        self.assertFalse(ready, "Trigger fired but trigger is disable")
+        ready = self.interface.is_device_ready(time_to_wait * 1000 * 2)
+        self.assertFalse(ready[0], "Trigger fired but trigger is disable")
+        time.sleep(time_to_wait)
 
         self.trigger.enable()
-        ready = self.interface.is_device_ready(0.001)  # wait only 1ms
-        self.assertTrue(ready, "Trigger does not fire, or black was lost")
+        ready = self.interface.is_device_ready(1)  # wait only 1ms
+        self.assertTrue(ready[0], "Trigger does not fire, or black was lost")

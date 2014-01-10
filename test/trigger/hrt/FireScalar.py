@@ -82,8 +82,8 @@ class FireScalar(unittest.TestCase):
 
 
         # A new block must appear in the buffer
-        ready = self.interface.is_device_ready(ztstamp.seconds + 5)
-        self.assertTrue(ready, "Trigger does not fire, or black was lost")
+        ready = self.interface.is_device_ready(ztstamp.seconds * 1000 + 5)
+        self.assertTrue(ready[0], "Trigger does not fire, or black was lost")
 
         block_tstamp = self.interface.read_ctrl().tstamp
         block_nsec = utils.convert_ZioTimeStamp_to_ns(block_tstamp)
@@ -118,8 +118,8 @@ class FireScalar(unittest.TestCase):
         nsec = int(time.time() * 1000000000)
 
         # A new block must appear in the buffer
-        ready = self.interface.is_device_ready(ztstamp.seconds + 5)
-        self.assertTrue(ready, "Trigger does not fire, or black was lost")
+        ready = self.interface.is_device_ready(ztstamp.seconds * 1000 + 5)
+        self.assertTrue(ready[0], "Trigger does not fire, or black was lost")
 
         block_tstamp = self.interface.read_ctrl().tstamp
         block_nsec = utils.convert_ZioTimeStamp_to_ns(block_tstamp)
