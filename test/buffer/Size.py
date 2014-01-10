@@ -41,6 +41,7 @@ class Size(unittest.TestCase):
         # Set and configure 'hrt' trigger
         self.cset.set_current_trigger("hrt")
         self.trigger = self.cset.trigger
+        self.trigger.disable()
 
         # Set and flush buffer
         self.cset.set_current_buffer(config.buf)
@@ -70,7 +71,9 @@ class Size(unittest.TestCase):
         for size in sizes:
             sys.stdout.write(".")
             sys.stdout.flush()
+            self.trigger.disable()
             self.chan.buffer.flush()
+            self.trigger.enable()
             self._test_resize_buffer(0, prev, size)
             prev = size
         sys.stdout.write("\n")
