@@ -44,6 +44,7 @@ class Overflow(unittest.TestCase):
         self.trigger = self.cset.trigger
 
         # Set and flush buffer
+        self.trigger.disable()
         self.cset.set_current_buffer(config.buf)
         self.chan.buffer.flush()
 
@@ -96,6 +97,7 @@ class Overflow(unittest.TestCase):
         # In order to do this test correctly, the buffer must be empty
         self.trigger.disable()
         self.chan.buffer.flush()
+        self.chan.attribute["alarms"].set_value(0xFF)
         self.trigger.enable()
 
         # Configure the buffer len
@@ -124,16 +126,15 @@ class Overflow(unittest.TestCase):
         print("\n\tBuffer length = {0} ({1}kb), block overflow = {2}".format(min(buf_max_len_list), buffer_max_kb, max(n_block)))
         print("\tIt can take about {0} seconds".format((max(n_block) + 1) * s_fire))
 
-
         # Fill the whole buffer (no overflow)
-        for _i in range(min(buf_max_len_list)):
-            utils.trigger_hrt_fill_buffer(self.trigger, 1, s_fire)
-            self._test_lost_block_alarm(False)
+        for i in range(min(buf_max_len_list)):
+            utils.trigger_hrt_fill_buffer(self.trigger, 1)
+            self._test_lost_block_alarm(i, False)
 
         # Try to put other blocks (overflow)
-        for _i in range(max(n_block)):
-            utils.trigger_hrt_fill_buffer(self.trigger, 1, s_fire)
-            self._test_lost_block_alarm(True)
+        for i in range(max(n_block)):
+            utils.trigger_hrt_fill_buffer(self.trigger, 1)
+            self._test_lost_block_alarm(i, True)
 
 
         # Get the current status after filling the buffer
@@ -168,8 +169,7 @@ class Overflow(unittest.TestCase):
         self.assertEqual(ctrl_curr_post.seq_num + 1, ctrl_cdev.seq_num,
             "Sequence number should be {0}, but it is {1}".format(ctrl_curr_post.seq_num + 1, ctrl_cdev.seq_num))
 
-
-    def _test_lost_block_alarm(self, is_overflow):
+    def _test_lost_block_alarm(self, index, is_overflow):
         """
         It tests that the "lost block" alarm is consistent with the overflow
         condition. On overflow ,the lost block alarm is raised.
@@ -180,9 +180,9 @@ class Overflow(unittest.TestCase):
 
         if is_overflow:
             self.assertTrue(lost_block_alarm,
-                "Alarm flag must be set on overflow")
+                "Alarm flag must be set on overflow (block {0})".format(index))
         else:
             self.assertFalse(lost_block_alarm,
-                "Alarm flag must be clear if no overflow occurs")
+                "Alarm flag must be clear if no overflow (block {0})".format(index))
 
         self.chan.attribute["alarms"].set_value(1)
