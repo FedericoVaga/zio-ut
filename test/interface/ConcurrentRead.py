@@ -52,6 +52,7 @@ class ConcurrentRead(unittest.TestCase):
         self.blocks_queue = Queue()
         self.acquired_blocks = []
 
+        print("\nit can take about 1 minute")
 
     def tearDown(self):
         self.trigger.disable()

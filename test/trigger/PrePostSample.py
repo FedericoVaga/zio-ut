@@ -104,7 +104,7 @@ class PrePostSample(unittest.TestCase):
         for pre, post in zip(pres, posts):
             self._test_sysfs_value(self.trigger, "pre-samples", pre)
             self._test_sysfs_value(self.trigger, "post-samples", post)
-            self.__test_n_samples(self.trigger, self.interface, pre, post, self.force_fire)
+            self.__test_n_samples(self.trigger, self.interface, pre, post)
 
 
     def _test_sysfs_value(self, trigger, sysfs_attr, n_sample):
@@ -130,16 +130,18 @@ class PrePostSample(unittest.TestCase):
         It perform the test with a particular configuration of pre-samples
         and post-samples
         """
+        trigger.disable()
         self.chan.buffer.flush()
+        trigger.enable()
 
         for _i in range(10):
             sys.stdout.write(".")
             sys.stdout.flush()
             self.program_fires()
-            ready = self.interface.is_device_ready(1)
+            ready = interface.is_device_ready(1)
             self.assertTrue(ready[0], "Trigger '{0}' does not fire, or black was lost".format(config.trig))
 
-            ctrl = self.interface.read_ctrl()
+            ctrl = interface.read_ctrl()
 
             # ZIO allow to change ctrl.nsamples to return less samples then required
             expected_samples = pre + post

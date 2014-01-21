@@ -42,6 +42,7 @@ class ReadPolicy(unittest.TestCase):
         self.trigger = self.cset.trigger
 
         # Set and flush buffer
+        self.trigger.disable()
         self.cset.set_current_buffer(config.buf)
         self.chan.buffer.flush()
 
@@ -148,7 +149,7 @@ class ReadPolicy(unittest.TestCase):
         for _i in range(n_block - 1):
             ready = self.interface.is_device_ready(10)
             self.assertTrue(ready[0], "Blocks must be available")
-            _data = self.interface.read_data()
+            self.interface.read_data()
 
         ready = self.interface.is_device_ready(10)
         self.assertFalse(ready[0], "Buffer must be empty")
@@ -160,7 +161,8 @@ class ReadPolicy(unittest.TestCase):
         at time, no more, no less.
         """
 
-        utils.trigger_hrt_fill_buffer(self.trigger, config.n_block_load, 0.1, True)
+        utils.trigger_hrt_fill_buffer(self.trigger, config.n_block_load, \
+                                      0.1, True)
 
         self.interface.open_ctrl_data(os.O_RDONLY)
         fd = self.interface.fileno_ctrl()
